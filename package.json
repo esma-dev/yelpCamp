@@ -1,0 +1,26 @@
+{
+  "name": "yelpcamp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "ejs": "^2.5.7",
+    "express": "^4.15.5",
+    "nodemon": "^1.12.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/esma-dev/yelpCamp.git"
+  },
+  "author": "asmaa abbas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/esma-dev/yelpCamp/issues"
+  },
+  "homepage": "https://github.com/esma-dev/yelpCamp#readme"
+}
