@@ -3,6 +3,7 @@ const express = require("express"),
 	  bodyParser = require("body-parser"),
 	  mongoose = require("mongoose"),
 	  Campground = require("./models/campground");
+	  Comment = require("./models/comment");
 	  seedDB = require("./seeds");
 
 seedDB();
@@ -23,14 +24,14 @@ app.get('/campgrounds', (req, res, next) => {
 	Campground.find({}, (err, allCampgrounds) => {
 		if(err) console.log('ERROR!!!', err);
 		else {
-			res.render('index', {campgrounds: allCampgrounds});
+			res.render('campgrounds/index', {campgrounds: allCampgrounds});
 		}
 	});
 });
 
 //NEW ROUTE
 app.get('/campgrounds/new', (req, res, next) => {
-	res.render("new");
+	res.render("campgrounds/new");
 });
 
 //CREATE ROUTE
@@ -57,8 +58,40 @@ app.get('/campgrounds/:id', (req, res, next) => {
 		else {
 			console.log(foundCampground);
 			//render show template with that campground
-			res.render('show', {campground: foundCampground})
+			res.render('campgrounds/show', {campground: foundCampground})
+		};
+	});
+});
+
+// =============================================================================================
+// COMMENTS ROUTES
+// =============================================================================================
+
+//NEW ROUTE
+app.get("/campgrounds/:id/comments/new", (req, res, next) => {
+	Campground.findById(req.params.id, (err, campground) => {
+		if (err) console.log(err)
+		else {
+			res.render("comments/new", { campground });
 		}
+	});
+});
+
+//CREATE ROUTE
+app.post("/campgrounds/:id/comments", (req, res, next) => {
+	Campground.findById(req.params.id, (err, campground) => {
+		if(err) console.log("something went wrong with the CREATE route")
+		else {
+			Comment.create(req.body.comment, (err, comment) => {
+				if(err) console.log(err)
+				else {
+					//associate the comment to the campground
+					campground.comments.push(comment);
+					campground.save();
+					res.redirect("/campgrounds/" + req.params.id);
+				}
+			});
+		};
 	});
 });
 
