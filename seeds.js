@@ -40,7 +40,7 @@ const seedDB = () => {
 					Comment.create(
 						{
 							text: "This place is great, but I wish there was internet.",
-							author: "Hommer	"
+							author: "Hommer"
 						}, (err, comment) => {
 								if(err) console.log(err)
 								else {
