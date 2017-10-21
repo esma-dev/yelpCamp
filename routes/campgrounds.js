@@ -3,6 +3,15 @@ const router = express.Router();
 const Campground = require("../models/campground");
 
 
+//middleware
+const isLoggedIn = (req, res, next) => {
+	if(req.isAuthenticated()){
+		return next();
+	} else {
+		res.render("login");
+	}
+};
+
 //INDEX ROUTE
 router.get('/', (req, res, next) => {
 	Campground.find({}, (err, allCampgrounds) => {
@@ -17,12 +26,12 @@ router.get('/', (req, res, next) => {
 });
 
 //NEW ROUTE
-router.get('/new', (req, res, next) => {
+router.get('/new', isLoggedIn, (req, res, next) => {
 	res.render("campgrounds/new");
 });
 
 //CREATE ROUTE
-router.post('/', (req, res, next) => {
+router.post('/', isLoggedIn, (req, res, next) => {
 	//get data from form and add to campgrounds array
 	const campgroundName = req.body.name;
 	const campgroundImg = req.body.image;
