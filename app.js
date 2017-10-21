@@ -2,6 +2,7 @@ const express = require("express"),
 	  app = express(),
 	  bodyParser = require("body-parser"),
 	  mongoose = require("mongoose"),
+	  flash = require("connect-flash"),
 	  methodOverride = require("method-override"),
 	  Campground = require("./models/campground"),
 	  Comment = require("./models/comment"),
@@ -22,6 +23,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + "/public")); //serving the public directory to our Express app
 app.use(methodOverride("_method"));
+app.use(flash());
 
 //PASSPORT CONFIG
 app.use(require("express-session")({

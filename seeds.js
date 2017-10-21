@@ -30,28 +30,34 @@ const seedDB = () => {
 		else {
 			console.log("All Campgrounds successfully removed!");
 		};
+	Comment.remove({}, (err) => {
+		if(err) console.log(err);
+		else {
+			console.log("Removed all comments successfully!");
+		}
+	});
 		// add a few campgrounds
-		data.forEach((campground) => {
-			Campground.create(campground, (err, newCampground) => {
-				if(err) console.log(err);
-				else {
-					console.log("new campground created!");
-					// create a new comment
-					Comment.create(
-						{
-							text: "This place is great, but I wish there was internet.",
-							author: "Hommer"
-						}, (err, comment) => {
-								if(err) console.log(err)
-								else {
-									newCampground.comments.push(comment);
-									newCampground.save();
-									console.log("Created new comment!");
-								}
-						});
-				};
-			});
-		});
+		// data.forEach((campground) => {
+		// 	Campground.create(campground, (err, newCampground) => {
+		// 		if(err) console.log(err);
+		// 		else {
+		// 			console.log("new campground created!");
+		// 			// create a new comment
+		// 			Comment.create(
+		// 				{
+		// 					text: "This place is great, but I wish there was internet.",
+		// 					author: "Hommer"
+		// 				}, (err, comment) => {
+		// 						if(err) console.log(err)
+		// 						else {
+		// 							newCampground.comments.push(comment);
+		// 							newCampground.save();
+		// 							console.log("Created new comment!");
+		// 						}
+		// 				});
+		// 		};
+		// 	});
+		// });
 	});
 };
 

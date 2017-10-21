@@ -3,13 +3,13 @@ const router = express.Router();
 const passport = require("passport");
 const User = require("../models/user");
 
-const isLoggedIn = (req, res, next) => {
-	if(req.isAuthenticated()){
-		return next();
-	} else {
-		res.render("login");
-	}
-};
+// const isLoggedIn = (req, res, next) => {
+// 	if(req.isAuthenticated()){
+// 		return next();
+// 	} else {
+// 		res.render("login");
+// 	}
+// };
 
 //ROOT ROUTE
 router.get('/', (req, res, next) => {

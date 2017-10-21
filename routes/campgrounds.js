@@ -1,16 +1,35 @@
 const express = require("express");
 const router = express.Router();
 const Campground = require("../models/campground");
-
+const middleware = require("../middleware");
 
 //middleware
-const isLoggedIn = (req, res, next) => {
-	if(req.isAuthenticated()){
-		return next();
-	} else {
-		res.render("login");
-	}
-};
+// const isLoggedIn = (req, res, next) => {
+// 	if(req.isAuthenticated()){
+// 		return next();
+// 	} else {
+// 		res.render("login");
+// 	}
+// };
+
+// const checkCampgroundOwnership = (req, res, next) => {
+// 	if(req.isAuthenticated()){
+// 		Campground.findById(req.params.id, (err, foundCampground) => {
+// 			if(err) res.redirect("back");
+// 			else {
+// 				//does user own the campground?
+// 				if(foundCampground.author.id.equals(req.user._id)){
+// 					next();
+// 				} else {
+// 					//if not logged in, redirect somewhere
+// 					res.redirect("back");				}
+// 			}
+// 		});
+// 	} else {
+// 		//if not logged in, redirect somewhere
+// 		res.redirect("back"); //takes the user back to the previuos page they came from
+// 	}
+// };
 
 //INDEX ROUTE
 router.get('/', (req, res, next) => {
@@ -26,12 +45,12 @@ router.get('/', (req, res, next) => {
 });
 
 //NEW ROUTE
-router.get('/new', isLoggedIn, (req, res, next) => {
+router.get('/new', middleware.isLoggedIn, (req, res, next) => {
 	res.render("campgrounds/new");
 });
 
 //CREATE ROUTE
-router.post('/', isLoggedIn, (req, res, next) => {
+router.post('/', middleware.isLoggedIn, (req, res, next) => {
 	//get data from form and add to campgrounds array
 	const campgroundName = req.body.name;
 	const campgroundImg = req.body.image;
@@ -69,17 +88,14 @@ router.get('/:id', (req, res, next) => {
 });
 
 //EDIT CAMPGROUND ROUTE
-router.get("/:id/edit", (req, res, next) => {
+router.get("/:id/edit", middleware.checkCampgroundOwnership, (req, res, next) => {
 	Campground.findById(req.params.id, (err, foundCampground) => {
-		if(err) res.redirect("/campgrounds");
-		else {
-			res.render("campgrounds/edit", { campground: foundCampground});
-		}
+		res.render("campgrounds/edit", { campground: foundCampground});		
 	});
 });
 
 //UPDATE CAMPGROUND ROUTE
-router.put("/:id", (req, res, next) => {
+router.put("/:id", middleware.checkCampgroundOwnership, (req, res, next) => {
 	//find campground and update
 	Campground.findByIdAndUpdate(req.params.id, req.body.campground, (err, updatedCampground) => {
 		if (err) res.redirect("/campgrounds");
@@ -91,7 +107,7 @@ router.put("/:id", (req, res, next) => {
 });
 
 //DESTROY CAMPGROUND ROUTE
-router.delete("/:id", (req, res, next) => {
+router.delete("/:id", middleware.checkCampgroundOwnership, (req, res, next) => {
 	Campground.findByIdAndRemove(req.params.id, (err) => {
 		if(err) res.redirect("/campgrounds");
 		else {
