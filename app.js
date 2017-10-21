@@ -2,6 +2,7 @@ const express = require("express"),
 	  app = express(),
 	  bodyParser = require("body-parser"),
 	  mongoose = require("mongoose"),
+	  methodOverride = require("method-override"),
 	  Campground = require("./models/campground"),
 	  Comment = require("./models/comment"),
 	  seedDB = require("./seeds"),
@@ -20,6 +21,7 @@ mongoose.connect("mongodb://localhost/yelp_camp", { useMongoClient: true });
 app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + "/public")); //serving the public directory to our Express app
+app.use(methodOverride("_method"));
 
 //PASSPORT CONFIG
 app.use(require("express-session")({
