@@ -47,22 +47,22 @@ body {
 
 .slideshow li:nth-child(2) {
 	background-image: url(https://farm8.staticflickr.com/7247/7629677566_328c81ebef.jpg);
-	animation-delay: 5s;
+	animation-delay: 10s;
 }
 
 .slideshow li:nth-child(3) {
 	background-image: url(https://farm8.staticflickr.com/7275/7829452972_0893ea5f5b.jpg);
-	animation-delay: 10s;
+	animation-delay: 20s;
 }
 
 .slideshow li:nth-child(4) {
 	background-image: url(https://farm7.staticflickr.com/6045/6262128076_891e67f2f3.jpg);
-	animation-delay: 15s;
+	animation-delay: 30s;
 }
 
 .slideshow li:nth-child(5) {
 	background-image: url(https://farm8.staticflickr.com/7354/16276732798_914d73028c.jpg);
-	animation-delay: 20s;
+	animation-delay: 40s;
 }
 
 @keyframes imageAnimation {
