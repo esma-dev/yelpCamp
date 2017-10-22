@@ -4,33 +4,6 @@ const Campground = require("../models/campground");
 const Comment = require("../models/comment");
 const middleware = require("../middleware");
 
-//middleware
-// const isLoggedIn = (req, res, next) => {
-// 	if(req.isAuthenticated()){
-// 		return next();
-// 	} else {
-// 		res.render("login");
-// 	}
-// };
-
-// const checkCommentOwnership = (req, res, next) => {
-// 	if(req.isAuthenticated()){
-// 		Comment.findById(req.params.comment_id, (err, foundComment) => {
-// 			if(err) res.redirect("back");
-// 			else {
-// 				// does user own comment?
-// 				if(foundComment.author.id.equals(req.user._id)){
-// 					next();
-// 				} else {
-// 					res.redirect("back");
-// 				}
-// 			}
-// 		});
-// 	} else {
-// 		res.redirect("back");
-// 	}
-// };
-
 //COMMENTS NEW
 router.get("/new", middleware.isLoggedIn, (req, res, next) => {
 	Campground.findById(req.params.id, (err, campground) => {
@@ -47,8 +20,10 @@ router.post("/", middleware.isLoggedIn, (req, res, next) => {
 		if(err) console.log("something went wrong with the CREATE route")
 		else {
 			Comment.create(req.body.comment, (err, comment) => {
-				if(err) console.log(err);
-				else {
+				if(err) {
+					req.flash("err", "Something went wrong.")
+					console.log(err);
+				} else {
 					//add username and id to comment
 					comment.author.id = req.user._id;
 					comment.author.username = req.user.username;
@@ -92,6 +67,7 @@ router.delete("/:comment_id", middleware.checkCommentOwnership, (req, res, next)
 	Comment.findByIdAndRemove(req.params.comment_id, (err) => {
 		if(err) res.redirect("back");
 		else {
+			req.flash("success", "Comment deleted.");
 			res.redirect("/campgrounds/" + req.params.id);
 		};
 	});

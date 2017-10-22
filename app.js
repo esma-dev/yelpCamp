@@ -41,24 +41,15 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
 	res.locals.currUser = req.user;
+	res.locals.error = req.flash("error");
+	res.locals.success = req.flash("success");
+
 	next();
 });
 
 app.use("/", indexRoutes);
 app.use("/campgrounds", campgroundRoutes);
 app.use("/campgrounds/:id/comments", commentRoutes);
-
-// =============================================================================================
-// COMMENTS ROUTES
-// =============================================================================================
-
-
-
-// =============================================================================================
-// AUTH ROUTES
-// =============================================================================================
-
-
 
 
 app.listen(3000, () => {

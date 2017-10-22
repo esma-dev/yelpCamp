@@ -3,34 +3,6 @@ const router = express.Router();
 const Campground = require("../models/campground");
 const middleware = require("../middleware");
 
-//middleware
-// const isLoggedIn = (req, res, next) => {
-// 	if(req.isAuthenticated()){
-// 		return next();
-// 	} else {
-// 		res.render("login");
-// 	}
-// };
-
-// const checkCampgroundOwnership = (req, res, next) => {
-// 	if(req.isAuthenticated()){
-// 		Campground.findById(req.params.id, (err, foundCampground) => {
-// 			if(err) res.redirect("back");
-// 			else {
-// 				//does user own the campground?
-// 				if(foundCampground.author.id.equals(req.user._id)){
-// 					next();
-// 				} else {
-// 					//if not logged in, redirect somewhere
-// 					res.redirect("back");				}
-// 			}
-// 		});
-// 	} else {
-// 		//if not logged in, redirect somewhere
-// 		res.redirect("back"); //takes the user back to the previuos page they came from
-// 	}
-// };
-
 //INDEX ROUTE
 router.get('/', (req, res, next) => {
 	Campground.find({}, (err, allCampgrounds) => {
@@ -54,6 +26,7 @@ router.post('/', middleware.isLoggedIn, (req, res, next) => {
 	//get data from form and add to campgrounds array
 	const campgroundName = req.body.name;
 	const campgroundImg = req.body.image;
+	const campgroundPrice = req.body.price;
 	const campgroundDesc = req.body.description;
 	const author = {
 		id: req.user._id,
@@ -62,6 +35,7 @@ router.post('/', middleware.isLoggedIn, (req, res, next) => {
 	const newCampground = {
 		name: campgroundName, 
 		image: campgroundImg, 
+		price: campgroundPrice,
 		description: campgroundDesc,
 		author: author
 	};
